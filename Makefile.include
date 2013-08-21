@@ -88,36 +88,36 @@ flash: $(BINARY).flash
 
 %.bin: %.elf
 	@#printf "  OBJCOPY $(*).bin\n"
-	$(Q)$(OBJCOPY) -Obinary $(*).elf $(*).bin
+	$(OBJCOPY) -Obinary $(*).elf $(*).bin
 
 %.hex: %.elf
 	@#printf "  OBJCOPY $(*).hex\n"
-	$(Q)$(OBJCOPY) -Oihex $(*).elf $(*).hex
+	$(OBJCOPY) -Oihex $(*).elf $(*).hex
 
 %.srec: %.elf
 	@#printf "  OBJCOPY $(*).srec\n"
-	$(Q)$(OBJCOPY) -Osrec $(*).elf $(*).srec
+	$(OBJCOPY) -Osrec $(*).elf $(*).srec
 
 %.list: %.elf
 	@#printf "  OBJDUMP $(*).list\n"
-	$(Q)$(OBJDUMP) -S $(*).elf > $(*).list
+	$(OBJDUMP) -S $(*).elf > $(*).list
 
 %.elf: $(OBJS) $(LDSCRIPT) $(TOOLCHAIN_DIR)/lib/libopencm3_stm32f1.a
 	@#printf "  LD      $(subst $(shell pwd)/,,$(@))\n"
-	$(Q)$(LD) -o $(*).elf $(OBJS) -lopencm3_stm32f1 $(LDFLAGS)
+	$(LD) -o $(*).elf $(OBJS) -lopencm3_stm32f1 $(LDFLAGS)
 
 %.o: %.c Makefile
 	@#printf "  CC      $(subst $(shell pwd)/,,$(@))\n"
-	$(Q)$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
-	$(Q)rm -f *.o
-	$(Q)rm -f *.d
-	$(Q)rm -f *.elf
-	$(Q)rm -f *.bin
-	$(Q)rm -f *.hex
-	$(Q)rm -f *.srec
-	$(Q)rm -f *.list
+	rm -f *.o
+	rm -f *.d
+	rm -f *.elf
+	rm -f *.bin
+	rm -f *.hex
+	rm -f *.srec
+	rm -f *.list
 
 ifeq ($(STLINK_PORT),)
 ifeq ($(BMP_PORT),)
@@ -147,7 +147,7 @@ endif
 else
 %.flash: %.elf
 	@echo "  GDB   $(*).elf (flash)"
-	$(Q)$(GDB) --batch \
+	$(GDB) --batch \
 		   -ex 'target extended-remote $(BMP_PORT)' \
 		   -x $(TOOLCHAIN_DIR)/scripts/black_magic_probe_flash.scr \
 		   $(*).elf
@@ -155,7 +155,7 @@ endif
 else
 %.flash: %.elf
 	@echo "  GDB   $(*).elf (flash)"
-	$(Q)$(GDB) --batch \
+	$(GDB) --batch \
 		   -ex 'target extended-remote $(STLINK_PORT)' \
 		   -x $(SCRIPT_DIR)/libopencm3/scripts/stlink_flash.scr \
 		   $(*).elf

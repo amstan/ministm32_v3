@@ -6,3 +6,6 @@
 *.list
 *.o
 *.srec
+*back*
+*.png
+mini-stm32

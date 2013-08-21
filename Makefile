@@ -27,3 +27,8 @@ include Makefile.include
 CFLAGS += -std=c99
 
 #CFLAFS += -Os
+
+back.h: back.png
+	python2 ./img2h.py -f back.png -n back>back.h
+
+mini-stm32.o: back.h
